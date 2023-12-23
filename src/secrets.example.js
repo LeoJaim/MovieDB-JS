@@ -1,0 +1,1 @@
+//Crea un file secret.js con tu APIKEY de movieDB
