@@ -21,12 +21,28 @@ async function getTrendingMoviesPreview() {
             trendingPreviewMoviesContainer.appendChild(movieContainer);
 
     });
-
-
-
     console.log({data,movies});
-
-
 }
 
+async function getCategories() {
+    const res = await fetch('https://api.themoviedb.org/3/genre/movie/list?api_key=' + API_KEY);
+    const data = await res.json();
+    const categories = data.genres; //el data. varía segun la definición de la API , aca es data.genres. En movies es data.results
+    
+    categories.forEach(category => {
+        const previewCategoriesContainer = document.querySelector('#categoriesPreview .categoriesPreview-list');
+
+        const categoryContainer = document.createElement('div');
+        categoryContainer.classList.add('category-container'); 
+        const categoryTitle = document.createElement('h3');
+        categoryTitle.classList.add('category-title');
+        categoryTitle.setAttribute('id', 'id' + category.id);
+        const categoryTitleText = document.createTextNode(category.name);
+        categoryTitle.appendChild(categoryTitleText);
+        categoryContainer.appendChild(categoryTitle);
+        previewCategoriesContainer.appendChild(categoryContainer);
+    });
+    console.log({data,categories});
+}
+getCategories();
 getTrendingMoviesPreview();
