@@ -13,7 +13,7 @@ async function getTrendingMoviesPreview() {
     const movies = data.results;
 
     movies.forEach(movie => {
-        const trendingPreviewMoviesContainer = document.querySelector
+        const trendingMoviesPreviewList = document.querySelector
         ('#trendingPreview .trendingPreview-movieList');
         const movieContainer = document.createElement('div');
         movieContainer.classList.add('movie-container');
@@ -28,7 +28,7 @@ async function getTrendingMoviesPreview() {
             );
 
             movieContainer.appendChild(movieImg);
-            trendingPreviewMoviesContainer.appendChild(movieContainer);
+            trendingMoviesPreviewList.appendChild(movieContainer);
 
     });
     console.log({data,movies});
@@ -39,7 +39,7 @@ async function getCategories() {
     const categories = data.genres; //el data. varía segun la definición de la API , aca es data.genres. En movies es data.results
     
     categories.forEach(category => {
-        const previewCategoriesContainer = document.querySelector('#categoriesPreview .categoriesPreview-list');
+        const categoriesPreviewList = document.querySelector('#categoriesPreview .categoriesPreview-list');
 
         const categoryContainer = document.createElement('div');
         categoryContainer.classList.add('category-container'); 
@@ -49,9 +49,8 @@ async function getCategories() {
         const categoryTitleText = document.createTextNode(category.name);
         categoryTitle.appendChild(categoryTitleText);
         categoryContainer.appendChild(categoryTitle);
-        previewCategoriesContainer.appendChild(categoryContainer);
+        categoriesPreviewList.appendChild(categoryContainer);
     });
     console.log({data,categories});
 }
-getCategories();
-getTrendingMoviesPreview();
+
