@@ -25,6 +25,8 @@ function navigator() {
     } else {
         homePage();
     } 
+    document.body.scrollTop = 0;            //para hacer scroll up cdo cambiamos de #
+    document.documentElement.scrollTop = 0; //para hacer scroll up cdo cambiamos de #
 } 
 
 function homePage () {

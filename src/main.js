@@ -31,7 +31,24 @@ function createMovies(movies,container){
 
 }
 
-
+function createCategories(categories,container) {
+        container.innerHTML = "";
+        categories.forEach(category => {  
+            const categoryContainer = document.createElement('div');
+            categoryContainer.classList.add('category-container'); 
+            const categoryTitle = document.createElement('h3');      
+            categoryTitle.classList.add('category-title');
+            categoryTitle.setAttribute('id', 'id' + category.id);
+            categoryTitle.addEventListener('click',()=> {
+                location.hash = '#category=' + category.id + '-' + category.name;
+            });
+            const categoryTitleText = document.createTextNode(category.name);
+    
+            categoryTitle.appendChild(categoryTitleText);
+            categoryContainer.appendChild(categoryTitle);
+            container.appendChild(categoryContainer);
+        });
+}
 
 //llamados a la API
 
@@ -66,23 +83,26 @@ async function getTrendingMoviesPreview() {
 async function getCategories() {
     const {data} = await api('genre/movie/list');
     const categories = data.genres; //el data. varía segun la definición de la API , aca es data.genres. En movies es data.results
-    //const categoriesPreviewList = document.querySelector('#categoriesPreview .categoriesPreview-list');
-    categoriesPreviewList.innerHTML = "";
-    categories.forEach(category => {  
-        const categoryContainer = document.createElement('div');
-        categoryContainer.classList.add('category-container'); 
-        const categoryTitle = document.createElement('h3');      
-        categoryTitle.classList.add('category-title');
-        categoryTitle.setAttribute('id', 'id' + category.id);
-        categoryTitle.addEventListener('click',()=> {
-            location.hash = '#category=' + category.id + '-' + category.name;
-        });
-        const categoryTitleText = document.createTextNode(category.name);
+    
+    createCategories(categories,categoriesPreviewList);
 
-        categoryTitle.appendChild(categoryTitleText);
-        categoryContainer.appendChild(categoryTitle);
-        categoriesPreviewList.appendChild(categoryContainer);
-    });
+    //const categoriesPreviewList = document.querySelector('#categoriesPreview .categoriesPreview-list');
+    // categoriesPreviewList.innerHTML = "";
+    // categories.forEach(category => {  
+    //     const categoryContainer = document.createElement('div');
+    //     categoryContainer.classList.add('category-container'); 
+    //     const categoryTitle = document.createElement('h3');      
+    //     categoryTitle.classList.add('category-title');
+    //     categoryTitle.setAttribute('id', 'id' + category.id);
+    //     categoryTitle.addEventListener('click',()=> {
+    //         location.hash = '#category=' + category.id + '-' + category.name;
+    //     });
+    //     const categoryTitleText = document.createTextNode(category.name);
+
+    //     categoryTitle.appendChild(categoryTitleText);
+    //     categoryContainer.appendChild(categoryTitle);
+    //     categoriesPreviewList.appendChild(categoryContainer);
+    // });
     console.log({data,categories});
 }
 
@@ -93,22 +113,24 @@ async function getMoviesByCategory(idcateg) {
         },
     });
     const movies = data.results;
+    createMovies(movies,genericSection);
+
     //const trendingMoviesPreviewList = document.querySelector('#trendingPreview .trendingPreview-movieList');
-    genericSection.innerHTML="";
-    movies.forEach(movie => {
-        const movieContainer = document.createElement('div');
-        movieContainer.classList.add('movie-container');
+    // genericSection.innerHTML="";
+    // movies.forEach(movie => {
+    //     const movieContainer = document.createElement('div');
+    //     movieContainer.classList.add('movie-container');
     
-        const movieImg = document.createElement('img');
-        movieImg.classList.add('movie-img');
-        movieImg.setAttribute('alt',movie.title);
-        movieImg.setAttribute(
-            'src',
-            'https://image.tmdb.org/t/p/w300' + movie.poster_path,
-            );
+    //     const movieImg = document.createElement('img');
+    //     movieImg.classList.add('movie-img');
+    //     movieImg.setAttribute('alt',movie.title);
+    //     movieImg.setAttribute(
+    //         'src',
+    //         'https://image.tmdb.org/t/p/w300' + movie.poster_path,
+    //         );
 
-            movieContainer.appendChild(movieImg);
-            genericSection.appendChild(movieContainer);
+    //         movieContainer.appendChild(movieImg);
+    //         genericSection.appendChild(movieContainer);
 
-    });    
+    // });    
 }
