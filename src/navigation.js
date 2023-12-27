@@ -34,7 +34,7 @@ function homePage () {
     headerSection.style.background = '';
     arrowBtn.classList.add('inactive');
     arrowBtn.classList.remove('header-arrow--white');
-    headerTitle.classList.add('inactive');
+    headerTitle.classList.remove('inactive');
     headerCategoryTitle.classList.add('inactive');
     searchForm.classList.remove('inactive');
 
@@ -42,7 +42,7 @@ function homePage () {
     categoriesPreviewSection.classList.remove('inactive');
     genericSection.classList.add('inactive');
     movieDetailSection.classList.add('inactive');
-
+    headerTitle.innerHTML = 'Todas las Películas en una sóla Página';
     getTrendingMoviesPreview();
     getCategories();
 }
@@ -53,13 +53,19 @@ function categoriesPage () {
     arrowBtn.classList.remove('inactive');
     arrowBtn.classList.remove('header-arrow--white');
     headerTitle.classList.remove('inactive');
-    headerCategoryTitle.classList.add('inactive');
+    headerCategoryTitle.classList.remove('inactive');
     searchForm.classList.add('inactive');
 
     trendingPreviewSection.classList.add('inactive');
     categoriesPreviewSection.classList.add('inactive');
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
+
+    const [_,categoryData] = location.hash.split('=');
+    const [idCateg,categName]  = categoryData.split('-');
+    headerTitle.innerHTML = 'Películas por Género';
+    headerCategoryTitle.innerHTML = categName;
+    getMoviesByCategory(idCateg);
 }
 function searchPage () {
     console.log('Search');
@@ -86,7 +92,7 @@ function trendsPage () {
     arrowBtn.classList.remove('inactive');
     arrowBtn.classList.remove('header-arrow--white');
     headerTitle.classList.remove('inactive');
-    headerCategoryTitle.classList.add('inactive');
+    headerCategoryTitle.classList.remove('inactive');
     searchForm.classList.add('inactive');
 
     trendingPreviewSection.classList.add('inactive');
