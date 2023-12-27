@@ -1,11 +1,13 @@
 searchFormBtn.addEventListener('click',()=> {
-    location.hash='#search=';
+    
+    location.hash='#search=' + searchFormInput.value;
 });
 trendingBtn.addEventListener('click',()=> {
     location.hash='#trends'
 })
 arrowBtn.addEventListener('click',()=> {
-    location.hash='#home';
+    history.back();
+    //location.hash='#home';
 })
 window.addEventListener('DOMContentLoaded',navigator,false);
 window.addEventListener('hashchange',navigator,false);
@@ -28,7 +30,6 @@ function navigator() {
     document.body.scrollTop = 0;            //para hacer scroll up cdo cambiamos de #
     document.documentElement.scrollTop = 0; //para hacer scroll up cdo cambiamos de #
 } 
-
 function homePage () {
     console.log('Home!!!');
 
@@ -84,7 +85,8 @@ function searchPage () {
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
 
-
+    const [_,query] = location.hash.split('=');
+    getMoviesBySearch(query);
 }
 function trendsPage () {
     console.log('Trends');
@@ -101,6 +103,9 @@ function trendsPage () {
     categoriesPreviewSection.classList.add('inactive');
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
+
+    headerCategoryTitle.innerHTML = 'Tendencias';
+    getTrendingMovies();
 }
 function moviePage () {
     console.log('Movie!!!');

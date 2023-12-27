@@ -52,7 +52,6 @@ function createCategories(categories,container) {
 
 //llamados a la API
 
-
 async function getTrendingMoviesPreview() {
     const { data } = await api('trending/movie/day');
     const movies = data.results;
@@ -134,3 +133,19 @@ async function getMoviesByCategory(idcateg) {
 
     // });    
 }
+
+async function getMoviesBySearch(query) {
+    const { data } = await api('search/movie',{
+        params: {
+            query: query,
+        },
+    });
+    const movies = data.results;
+    createMovies(movies,genericSection);    
+}
+async function getTrendingMovies() {
+    const { data } = await api('trending/movie/day');
+    const movies = data.results;
+  
+    createMovies(movies, genericSection);
+  }
