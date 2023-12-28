@@ -28,8 +28,8 @@ function createMovies(movies,container){
             'https://image.tmdb.org/t/p/w300' + movie.poster_path,
             );
 
-            movieContainer.appendChild(movieImg);
-            container.appendChild(movieContainer);
+        movieContainer.appendChild(movieImg);
+        container.appendChild(movieContainer);
     });
 }
 

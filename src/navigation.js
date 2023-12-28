@@ -1,5 +1,4 @@
 searchFormBtn.addEventListener('click',()=> {
-    
     location.hash='#search=' + searchFormInput.value;
 });
 trendingBtn.addEventListener('click',()=> {
