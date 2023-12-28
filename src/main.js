@@ -21,8 +21,6 @@ const lazyLoader = new IntersectionObserver((entries) => {
     });
 });
 
-
-
 function createMovies(movies,container,lazyload = false){
     container.innerHTML= '';
     movies.forEach(movie => {
@@ -34,11 +32,16 @@ function createMovies(movies,container,lazyload = false){
         
         const movieImg = document.createElement('img');
         movieImg.classList.add('movie-img');
-        movieImg.setAttribute('alt',movie.title);
+        movieImg.setAttribute('alt',movie.title);       
         movieImg.setAttribute(
             lazyload ? 'data-img':'src',
             'https://image.tmdb.org/t/p/w300' + movie.poster_path,
             );
+        //si no tiene imágen trato el error poniéndole una por defecto
+        movieImg.addEventListener('error',()=> {
+            movieImg.setAttribute('src',
+            'https://img.freepik.com/free-vector/oops-404-error-with-broken-robot-concept-illustration_114360-5529.jpg?w=740&t=st=1703789424~exp=1703790024~hmac=4c80ac54cb0cc7456ac1aa28cbde7148dc416b4b3cba5c74a3407548fb594353');
+        });
         //Activo el observador para las imágenes
         if (lazyload) {lazyLoader.observe(movieImg);}
         
@@ -92,7 +95,7 @@ async function getTrendingMoviesPreview() {
     //         trendingMoviesPreviewList.appendChild(movieContainer);
 
     // });
-    console.log({data,movies});
+    //console.log({data,movies});
 }
 
 async function getCategories() {
@@ -118,7 +121,7 @@ async function getCategories() {
     //     categoryContainer.appendChild(categoryTitle);
     //     categoriesPreviewList.appendChild(categoryContainer);
     // });
-    console.log({data,categories});
+    //console.log({data,categories});
 }
 
 async function getMoviesByCategory(idcateg) {
@@ -128,7 +131,7 @@ async function getMoviesByCategory(idcateg) {
         },
     });
     const movies = data.results;
-    createMovies(movies,genericSection);
+    createMovies(movies,genericSection,true);
 
     //const trendingMoviesPreviewList = document.querySelector('#trendingPreview .trendingPreview-movieList');
     // genericSection.innerHTML="";
@@ -189,5 +192,5 @@ async function getRelatedMoviesId (id) {
     const { data } = await api(`movie/${id}/recommendations`);
     const relatedMovies = data.results;
 
-    createMovies(relatedMovies,relatedMoviesContainer);
+    createMovies(relatedMovies,relatedMoviesContainer,true);
 }

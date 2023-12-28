@@ -13,7 +13,7 @@ window.addEventListener('hashchange',navigator,false);
 
 function navigator() {
 
-    console.log({location});
+    //console.log({location});
 
     if (location.hash.startsWith('#trends')) {
         trendsPage ();
@@ -30,8 +30,7 @@ function navigator() {
     document.documentElement.scrollTop = 0; //para hacer scroll up cdo cambiamos de #
 } 
 function homePage () {
-    console.log('Home!!!');
-
+    //console.log('Home!!!');
     headerSection.classList.remove('header-container--long');
     headerSection.style.background = '';
     arrowBtn.classList.add('inactive');
@@ -49,7 +48,7 @@ function homePage () {
     getCategories();
 }
 function categoriesPage () {
-    console.log('Categories');
+    //console.log('Categories');
     headerSection.classList.remove('header-container--long');
     headerSection.style.background = '';
     arrowBtn.classList.remove('inactive');
@@ -70,7 +69,7 @@ function categoriesPage () {
     getMoviesByCategory(idCateg);
 }
 function searchPage () {
-    console.log('Search');
+    //console.log('Search');
     headerSection.classList.remove('header-container--long');
     headerSection.style.background = '';
     arrowBtn.classList.remove('inactive');
@@ -88,7 +87,7 @@ function searchPage () {
     getMoviesBySearch(query);
 }
 function trendsPage () {
-    console.log('Trends');
+    //console.log('Trends');
 
     headerSection.classList.remove('header-container--long');
     headerSection.style.background = '';
@@ -107,8 +106,7 @@ function trendsPage () {
     getTrendingMovies();
 }
 function moviePage () {
-    console.log('Movie!!!');
-
+    //console.log('Movie!!!');
     headerSection.classList.add('header-container--long');
     //headerSection.style.background = '';
     arrowBtn.classList.remove('inactive');
