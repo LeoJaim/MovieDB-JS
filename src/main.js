@@ -11,7 +11,7 @@ const api = axios.create({
 // Utils
 
 function createMovies(movies,container){
-    container.innerHTML= "";
+    container.innerHTML= '';
     movies.forEach(movie => {
         const movieContainer = document.createElement('div');
         movieContainer.classList.add('movie-container');
@@ -31,7 +31,6 @@ function createMovies(movies,container){
             movieContainer.appendChild(movieImg);
             container.appendChild(movieContainer);
     });
-
 }
 
 function createCategories(categories,container) {
