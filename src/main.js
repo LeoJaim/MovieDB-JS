@@ -82,7 +82,12 @@ async function getTrendingMoviesPreview() {
     const { data } = await api('trending/movie/day');
     const movies = data.results;
     //const trendingMoviesPreviewList = document.querySelector('#trendingPreview .trendingPreview-movieList');
-    createMovies(movies,trendingMoviesPreviewList,true);
+    createMovies(
+        movies,
+        trendingMoviesPreviewList,
+        {lazyload:true,
+            clean:true
+        });
 }
 
 async function getCategories() {
@@ -99,31 +104,37 @@ async function getMoviesByCategory(idcateg) {
         },
     });
     const movies = data.results;
-    createMovies(movies,genericSection,true);  
+    maxPage = data.total_pages;
+    createMovies(movies,genericSection,true);
 }
 
-async function getPaginatedMoviesByCategory() {
-    const {scrollTop,
-           scrollHeight,
-           clientHeight} = document.documentElement;
+function getPaginatedMoviesByCategory(idcateg) {
+    //función con closure
+    return async function () {
+        const {scrollTop,
+               scrollHeight,
+               clientHeight
+              } = document.documentElement;
+        const scrollIsBottom = ((clientHeight+scrollTop) /scrollHeight) >= 
+            scrollTrigger;
+        const pageIsNotMax = page < maxPage;
 
-    const [_,category] = location.hash.split('=');
-    const [idcat,categName]  = category.split('-');
-    if (((clientHeight+scrollTop) /scrollHeight) >= scrollTrigger) {
-        page++;
-        //console.log(page);
-        const { data } = await api('discover/movie',{
-            params: {
-                page:page,
-                with_genres: idcat,
-            },
-        });
-        const movies = data.results;
-        createMovies(
-            movies,
-            genericSection, 
-            {lazyload:true,clean:false},); 
-    } 
+        if (scrollIsBottom && pageIsNotMax) {
+            page++;
+            //console.log(page);
+            const { data } = await api('discover/movie',{
+                params: {
+                    with_genres: idcateg,
+                    page:page,       
+                },
+            });
+            const movies = data.results;
+            createMovies(
+                movies,
+                genericSection, 
+                {lazyload:true,clean:false},); 
+        }; 
+    };
 }
 
 async function getMoviesBySearch(query) {
@@ -134,42 +145,47 @@ async function getMoviesBySearch(query) {
         },
     });
     const movies = data.results;
+    maxPage = data.total_pages;
     createMovies(movies,genericSection,);    
 }
 
-async function getPaginatedMoviesBySearch() {
-    const [_,iquery] = location.hash.split('=');
-   
-    const { data } = await api('search/movie',{
-        params: {
-            query: iquery,
-            page: page
-        },
-    });
-    const movies = data.results;
-    const {scrollTop,
-        scrollHeight,
-        clientHeight} = document.documentElement;
-        //console.log((clientHeight+scrollTop) /scrollHeight);
-    if (((clientHeight+scrollTop) /scrollHeight) >= scrollTrigger) {
-        page++; 
-        //console.log(page);
-        createMovies(
-            movies, 
-            genericSection,
-            {lazyload:true,clean:false},);    
-    }
+function getPaginatedMoviesBySearch(query) {
+    //Solución con Closure para acceder a string de búsqueda pasándolo
+    //como parámetro
+    //const [_,iquery] = location.hash.split('='); "No necesito mas esta linea"
+    return async function () {
+        const {
+            scrollTop,
+            scrollHeight,
+            clientHeight
+              } = document.documentElement;
+        const scrollIsBottom = ((clientHeight+scrollTop) /scrollHeight) >= 
+                                scrollTrigger;
+        const pageIsNotMax = page < maxPage;
+        if (scrollIsBottom && pageIsNotMax) {
+            page++; 
+            //console.log(page);
+            const { data } = await api('search/movie',{
+                params: {
+                    query: query,
+                    page: page
+                },
+            });
+            const movies = data.results;
+            createMovies(
+                movies, 
+                genericSection,
+                {lazyload:true,clean:false},);    
+        };
+    };
 }
 
 async function getTrendingMovies() {
     const { data } = await api('trending/movie/day');
     const movies = data.results;
     createMovies(movies, genericSection,{lazyload:true,clean:true});
-
-    // const btnLoadMore = document.createElement('button');
-    // btnLoadMore.innerHTML = 'Mas Pelis';
-    // btnLoadMore.addEventListener('click',getPaginatedTrendingMovies)
-    // genericSection.appendChild(btnLoadMore);
+    //console.log(data.total_pages);
+    maxPage = data.total_pages;
     
 }
 
@@ -178,7 +194,9 @@ async function getPaginatedTrendingMovies(){
            scrollHeight,
            clientHeight} = document.documentElement;
     
-    if (((clientHeight+scrollTop) /scrollHeight) >= scrollTrigger) {
+           const pageIsNotMax = page < maxPage;
+           const scrollIsBottom = ((clientHeight+scrollTop)/scrollHeight) >= scrollTrigger;
+    if (scrollIsBottom && pageIsNotMax) {
         page++;
         //console.log(page);
         const { data } = await api('trending/movie/day',{
@@ -187,6 +205,7 @@ async function getPaginatedTrendingMovies(){
             },
         });
         const movies = data.results;
+        //console.log(data)
         createMovies(
             movies, 
             genericSection,
@@ -194,7 +213,7 @@ async function getPaginatedTrendingMovies(){
     }
 }
 
-  async function getMovieById(id) {
+async function getMovieById(id) {
     //Trae el detalle de una peli, cdo haces click en el trending preview
     //o en el trending en general.
     const { data: movie } = await api('movie/' + id);
@@ -221,4 +240,56 @@ async function getRelatedMoviesId (id) {
     const relatedMovies = data.results;
     console.log(relatedMovies);
     createMovies(relatedMovies,relatedMoviesContainer,true);
+}
+
+/* Funciones paginadas sin Closure */
+async function getPaginatedMoviesBySearch_no_closure() {
+    //vuelvo a traer el query porque no puedo acceder (sin closures) 
+    //a la variable q tiene el search de la función sin paginar
+    const [_,iquery] = location.hash.split('=');
+    const {scrollTop,
+        scrollHeight,
+        clientHeight} = document.documentElement;
+    const scrollIsBottom = ((clientHeight+scrollTop) /scrollHeight) >= 
+                               scrollTrigger;
+    const pageIsNotMax = page < maxPage;
+    if (scrollIsBottom && pageIsNotMax) {
+        page++; 
+        //console.log(page);
+        const { data } = await api('search/movie',{
+            params: {
+                query: iquery,
+                page: page
+            },
+        });
+        const movies = data.results;
+        createMovies(
+            movies, 
+            genericSection,
+            {lazyload:true,clean:false},);    
+    };
+}
+
+async function getPaginatedMoviesByCategory_no_closure() {
+    const {scrollTop,
+           scrollHeight,
+           clientHeight} = document.documentElement;
+
+    const [_,category] = location.hash.split('=');
+    const [idcat,categName]  = category.split('-');
+    if (((clientHeight+scrollTop) /scrollHeight) >= scrollTrigger) {
+        page++;
+        //console.log(page);
+        const { data } = await api('discover/movie',{
+            params: {
+                page:page,
+                with_genres: idcat,
+            },
+        });
+        const movies = data.results;
+        createMovies(
+            movies,
+            genericSection, 
+            {lazyload:true,clean:false},); 
+    } 
 }

@@ -1,6 +1,7 @@
+let maxPage;
 let page = 1;
 let infiniteScroll;
-const scrollTrigger = 0.85;
+const scrollTrigger = 0.90;
 
 searchFormBtn.addEventListener('click',()=> {
     location.hash='#search=' + searchFormInput.value;
@@ -89,7 +90,7 @@ function categoriesPage () {
     headerCategoryTitle.innerHTML = categName;
     page = 1;
     getMoviesByCategory(idCateg);
-    infiniteScroll = getPaginatedMoviesByCategory;
+    infiniteScroll = getPaginatedMoviesByCategory(idCateg);
 }
 function searchPage () {
     //console.log('Search');
@@ -114,7 +115,7 @@ function searchPage () {
     searchInput.value = query;
     page = 1;
     getMoviesBySearch(query);
-    infiniteScroll = getPaginatedMoviesBySearch;
+    infiniteScroll = getPaginatedMoviesBySearch(query);
 }
 function trendsPage () {
     //console.log('Trends');
