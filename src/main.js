@@ -21,9 +21,7 @@ function likedMovieInfo(){
 }
 
 function likeMovie(movie){
-
     const likedMovies = likedMovieInfo();
-
     if(likedMovies[movie.id]) {
         //sacar peli del LS
         console.log('ya esta likeada, ELMINAR');
@@ -34,7 +32,6 @@ function likeMovie(movie){
     }
     localStorage.setItem('likedMovie',JSON.stringify(likedMovies));
 }
-
 
 // Utils
 //Definición del lazy loader
