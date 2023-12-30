@@ -22,15 +22,18 @@ function likedMovieInfo(){
 
 function likeMovie(movie){
     const likedMovies = likedMovieInfo();
+    //console.log(likedMovies);
     if(likedMovies[movie.id]) {
         //sacar peli del LS
-        console.log('ya esta likeada, ELMINAR');
+        //console.log('ya esta likeada, ELMINAR');
         likedMovies[movie.id] = undefined;
     } else {
-        console.log('no esta likeada, AGREGAR');
+        //console.log('no esta likeada, AGREGAR');
         likedMovies[movie.id] = movie;
     }
     localStorage.setItem('likedMovie',JSON.stringify(likedMovies));
+    getLikedMovies();
+    getTrendingMoviesPreview()
 }
 
 // Utils
@@ -76,6 +79,9 @@ function createMovies(
         });
         const movieBtn = document.createElement('button');
         movieBtn.classList.add('movie-btn');
+        //lo q sigue es un condicional, si encuentra 
+        //el movieID en el array que devuelve la función setea el botón en likeado
+        likedMovieInfo() [movie.id] && movieBtn.classList.add('movie-btn--liked');
         movieBtn.addEventListener('click',() => {
             movieBtn.classList.toggle('movie-btn--liked');
             //Agrega peli a local storage
@@ -276,6 +282,17 @@ async function getRelatedMoviesId (id) {
     createMovies(relatedMovies,relatedMoviesContainer,true);
 }
 
+function getLikedMovies(){
+//esta función lee el localStorage y crea la lista de películas likeadas
+    const likedMovies = likedMovieInfo();
+    const moviesArray = Object.values(likedMovies);
+    createMovies(moviesArray,
+                 likedMovieList, 
+                 {lazyload: true,
+                  clean:true});
+}
+
+/*----------------------------------------------------------------------*/
 /* Funciones paginadas sin Closure */
 async function getPaginatedMoviesBySearch_no_closure() {
     //vuelvo a traer el query porque no puedo acceder (sin closures) 

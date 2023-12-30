@@ -61,6 +61,9 @@ function homePage () {
     headerCategoryTitle.classList.add('inactive');
     searchForm.classList.remove('inactive');
 
+    likedMovieTitle.classList.remove('inactive');
+    likedMovieList.classList.remove('inactive');
+
     trendingPreviewSection.classList.remove('inactive');
     categoriesPreviewSection.classList.remove('inactive');
     genericSection.classList.add('inactive');
@@ -68,6 +71,7 @@ function homePage () {
     headerTitle.innerHTML = 'Todas las Películas';
     getTrendingMoviesPreview();
     getCategories();
+    getLikedMovies();
 }
 function categoriesPage () {
     //console.log('Categories');
@@ -78,6 +82,8 @@ function categoriesPage () {
     headerTitle.classList.remove('inactive');
     headerCategoryTitle.classList.remove('inactive');
     searchForm.classList.add('inactive');
+    likedMovieTitle.classList.add('inactive');
+    likedMovieList.classList.add('inactive');
 
     trendingPreviewSection.classList.add('inactive');
     categoriesPreviewSection.classList.add('inactive');
@@ -105,6 +111,9 @@ function searchPage () {
     headerCategoryTitle.classList.add('inactive');
     searchForm.classList.remove('inactive');
 
+    likedMovieTitle.classList.add('inactive');
+    likedMovieList.classList.add('inactive');
+
     trendingPreviewSection.classList.add('inactive');
     categoriesPreviewSection.classList.add('inactive');
     genericSection.classList.remove('inactive');
@@ -128,6 +137,9 @@ function trendsPage () {
     headerCategoryTitle.classList.remove('inactive');
     searchForm.classList.add('inactive');
 
+    likedMovieTitle.classList.add('inactive');
+    likedMovieList.classList.add('inactive');
+
     trendingPreviewSection.classList.add('inactive');
     categoriesPreviewSection.classList.add('inactive');
     genericSection.classList.remove('inactive');
@@ -147,6 +159,9 @@ function moviePage () {
     headerTitle.classList.add('inactive');
     headerCategoryTitle.classList.add('inactive');
     searchForm.classList.add('inactive');
+
+    likedMovieTitle.classList.add('inactive');
+    likedMovieList.classList.add('inactive');
 
     trendingPreviewSection.classList.add('inactive');
     categoriesPreviewSection.classList.add('inactive');
