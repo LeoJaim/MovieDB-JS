@@ -1,3 +1,4 @@
+//DATA
 const api = axios.create({
     baseURL: 'https://api.themoviedb.org/3/',
     headres:{
@@ -7,6 +8,33 @@ const api = axios.create({
         'api_key':API_KEY,
     },
 });
+
+function likedMovieInfo(){
+    const item = JSON.parse(localStorage.getItem('likedMovie'));
+    let movies;
+    if (item) {
+        movies = item;
+    } else {
+        movies={};
+    }
+    return movies;
+}
+
+function likeMovie(movie){
+
+    const likedMovies = likedMovieInfo();
+
+    if(likedMovies[movie.id]) {
+        //sacar peli del LS
+        console.log('ya esta likeada, ELMINAR');
+        likedMovies[movie.id] = undefined;
+    } else {
+        console.log('no esta likeada, AGREGAR');
+        likedMovies[movie.id] = movie;
+    }
+    localStorage.setItem('likedMovie',JSON.stringify(likedMovies));
+}
+
 
 // Utils
 //Definición del lazy loader
@@ -34,7 +62,6 @@ function createMovies(
         const movieContainer = document.createElement('div');
         movieContainer.classList.add('movie-container');
 
-        
         const movieImg = document.createElement('img');
         movieImg.classList.add('movie-img');
         movieImg.setAttribute('alt',movie.title);       
@@ -54,7 +81,8 @@ function createMovies(
         movieBtn.classList.add('movie-btn');
         movieBtn.addEventListener('click',() => {
             movieBtn.classList.toggle('movie-btn--liked');
-            //Agregar peli a local storage
+            //Agrega peli a local storage
+            likeMovie(movie);
         });
 
         //Activo el observador para las imágenes
