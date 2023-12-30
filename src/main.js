@@ -33,9 +33,7 @@ function createMovies(
         movies.forEach(movie => {
         const movieContainer = document.createElement('div');
         movieContainer.classList.add('movie-container');
-        movieContainer.addEventListener('click',()=> {
-            location.hash = '#movie=' + movie.id;
-        });
+
         
         const movieImg = document.createElement('img');
         movieImg.classList.add('movie-img');
@@ -44,15 +42,26 @@ function createMovies(
             lazyload ? 'data-img':'src',
             'https://image.tmdb.org/t/p/w300' + movie.poster_path,
             );
+        movieImg.addEventListener('click',()=> {
+            location.hash = '#movie=' + movie.id;
+        });
         //si no tiene imágen trato el error poniéndole una por defecto
         movieImg.addEventListener('error',()=> {
             movieImg.setAttribute('src',
             'https://img.freepik.com/free-vector/oops-404-error-with-broken-robot-concept-illustration_114360-5529.jpg?w=740&t=st=1703789424~exp=1703790024~hmac=4c80ac54cb0cc7456ac1aa28cbde7148dc416b4b3cba5c74a3407548fb594353');
         });
+        const movieBtn = document.createElement('button');
+        movieBtn.classList.add('movie-btn');
+        movieBtn.addEventListener('click',() => {
+            movieBtn.classList.toggle('movie-btn--liked');
+            //Agregar peli a local storage
+        });
+
         //Activo el observador para las imágenes
         if (lazyload) {lazyLoader.observe(movieImg);}
         
         movieContainer.appendChild(movieImg);
+        movieContainer.appendChild(movieBtn);
         container.appendChild(movieContainer);
     });
 }
